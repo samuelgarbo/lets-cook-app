@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const { populate } = require('../models/user');
 
 // @route   GET api/users
 // @desc    Get all users
@@ -33,6 +34,7 @@ router.post('/', (req, res)=>{
 // @access  Public
 router.get('/:userId', (req, res)=>{
     db.User.findById(req.params.userId)
+    .populate('recipes')
     .then(foundUser => {
         res.json(foundUser)
     })

@@ -33,6 +33,7 @@ router.post('/', (req, res)=>{
 // @access  Public
 router.get('/:recipeId', (req, res)=>{
     db.Recipe.findById(req.params.recipeId)
+    .populate('user')
     .then(foundRecipe => {
         res.json(foundRecipe)
     })

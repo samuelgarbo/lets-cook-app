@@ -4,11 +4,11 @@ mongoose.set('debug', true);
 
 const CONNECTION = process.env.MONGODB_URI || config.get('mongoURI');
 mongoose.connect(CONNECTION, {
-    userNewUrlParser: true, 
+    useNewUrlParser: true, 
     useUnifiedTopology: true, 
     useFindAndModify: false, 
     useCreateIndex: true})
-    .then(() => console.log('Databse connected'))
+    .then(() => console.log('Database connected'))
     .catch(err => console.log(err))
 
 module.exports.Recipe = require('./recipe')
