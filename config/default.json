@@ -1,0 +1,3 @@
+{
+    "mongoURI": "mongodb+srv://root:root@cluster0-uhuud.azure.mongodb.net/lets-cook-api?retryWrites=true&w=majority"
+}
