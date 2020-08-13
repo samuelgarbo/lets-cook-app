@@ -6,11 +6,12 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles((theme) => ({
-  mainFeaturedPost: {
+  root: {
     position: "relative",
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.common.white,
     marginBottom: theme.spacing(4),
+    paddingTop: theme.spacing(4),
     backgroundImage:
       "url(https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80)",
     backgroundSize: "cover",
@@ -21,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 0,
     bottom: 0,
-    right: 0,
     left: 0,
-    backgroundColor: "rgba(0,0,0,.3)",
+    right: 0,
+    backgroundColor: "rgba(0,0,0,.1)",
   },
   searchBar: {
     position: "relative",
@@ -32,39 +33,41 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       padding: theme.spacing(6),
       paddingRight: 0,
-    },  
+    },
+    title: {
+      backgroundColor: theme.palette.grey[900],
+      zIndex: 100,
+    },
   },
 }));
 
-export default function Hero(props) {
+export default function SearchBar(props) {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.mainFeaturedPost} square>
+    <div className={classes.root}>
       <div className={classes.overlay} />
       <Grid container justify="center">
-        <Grid item md={6}>
-          <div className={classes.searchBar}>
-            <Typography
-              component="h1"
-              variant="h3"
-              color="inherit"
-              align="center"
-              gutterBottom             
-            >
-              LET'S COOK!
-            </Typography>
-            <Paper elevation={3}>
-              <TextField
-                variant="outlined"
-                placeholder="What shall we cook?"
-                color="primary"
-                fullWidth
-              />              
-            </Paper>
-          </div>
+        <Grid item md={6} className={classes.searchBar}>         
+              <Typography
+                component="h1"
+                variant="h3"
+                color="inherit"
+                align="center"
+                gutterBottom
+              >
+                LET'S EAT
+              </Typography>         
+          <Paper elevation={3}>
+            <TextField
+              variant="outlined"
+              placeholder="What shall we cook?"
+              color="primary"
+              fullWidth
+            />
+          </Paper>
         </Grid>
       </Grid>
-    </Paper>
+    </div>
   );
 }

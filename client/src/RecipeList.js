@@ -5,23 +5,13 @@ import RecipeCard from "./RecipeCard";
 import Container from '@material-ui/core/Container'
 
 
-
-function RecipeList(props) { 
+function RecipeList({recipes}) { 
     
-  return (
-    <Container maxWidth='lg'>
-      <Grid container spacing={2} >
-          <RecipeCard/>
-          <RecipeCard/>
-          <RecipeCard/>
-          <RecipeCard/>
-          <RecipeCard/>
-          <RecipeCard/>
-          <RecipeCard/>
-          <RecipeCard/>
-        
+  return (  
+      <Grid item container spacing={2}>          
+          {recipes.map(recipe => <RecipeCard key={recipe.recipe.uri} recipe={recipe} />)}        
       </Grid>
-    </Container>
+    
   );
 }
 

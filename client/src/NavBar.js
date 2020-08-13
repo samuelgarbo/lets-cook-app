@@ -1,29 +1,25 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import Button from '@material-ui/core/Button'
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,       
-  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
-  },
-  
+  }  
 }));
 
 export default function MenuAppBar() {
@@ -37,27 +33,36 @@ export default function MenuAppBar() {
   };
 
   const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);    
+    setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  return (
-    <div className={classes.root}>
-      
-      <AppBar position="fixed" className={classes.navbar}>
-      <FormGroup>
-        <FormControlLabel
-          control={<Switch checked={auth} onChange={handleChange} aria-label="login switch" />}
-          label={auth ? 'Logout' : 'Login'}
-        />
-      </FormGroup>
+  return (    
+      <AppBar position="fixed" color='transparent' elevation={0}>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+          >
             <MenuIcon />
           </IconButton>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={auth}
+                  onChange={handleChange}
+                  aria-label="login switch"
+                />
+              }
+              label={auth ? "Logout" : "Login"}
+            />
+          </FormGroup>
           <Typography variant="h6" className={classes.title}>
             Let's Eat
           </Typography>
@@ -76,13 +81,13 @@ export default function MenuAppBar() {
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={open}
                 onClose={handleClose}
@@ -91,24 +96,18 @@ export default function MenuAppBar() {
                 <MenuItem onClick={handleClose}>My account</MenuItem>
               </Menu>
             </div>
-          ):(
+          ) : (
             <>
-              <Button 
-                variant='contained' 
-                color='secondary'
-                >
+              <Button variant="contained" color="secondary" size='small'>
                 Sign up
               </Button>
-              <Button 
-                variant='contained' 
-                color='secondary'
-                >
+              <Button variant="contained" color="secondary" size='small'>
                 Log In
               </Button>
             </>
           )}
         </Toolbar>
       </AppBar>
-    </div>
+   
   );
 }
