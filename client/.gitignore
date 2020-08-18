@@ -24,3 +24,5 @@ yarn-error.log*
 
 /src/blog
 /src/config
+/src/sign-up
+/src/sign-in
