@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
+  },  
 }));
 
 export default function SignUp({auth, setAuth}) {
@@ -45,10 +45,10 @@ export default function SignUp({auth, setAuth}) {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" color='secondary'>
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -60,6 +60,7 @@ export default function SignUp({auth, setAuth}) {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                color='secondary'
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -71,6 +72,7 @@ export default function SignUp({auth, setAuth}) {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                color='secondary'
               />
             </Grid>
             <Grid item xs={12}>
@@ -82,6 +84,7 @@ export default function SignUp({auth, setAuth}) {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                color='secondary'
               />
             </Grid>
             <Grid item xs={12}>
@@ -94,11 +97,12 @@ export default function SignUp({auth, setAuth}) {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                color='secondary'
               />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                control={<Checkbox value="allowExtraEmails" color="secondary" />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid>
@@ -107,7 +111,7 @@ export default function SignUp({auth, setAuth}) {
             type="submit"
             fullWidth
             variant="contained"
-            color="primary"
+            color="secondary"
             className={classes.submit}
           >
             Sign Up

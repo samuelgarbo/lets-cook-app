@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1),
+    textDecoration: "none",
   },
   overlay: {
     position: "absolute",
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     cursor: "pointer",
     height: "50px",
-    width: "100px"
+    width: "100px",
   },
 }));
 
@@ -83,10 +84,9 @@ export default function MenuAppBar({ auth, setAuth }) {
         >
           <MenuIcon />
         </IconButton>
-        <Link to='/'>
+        <Link to="/">
           <Logo className={classes.logo} />
         </Link>
-
         <FormGroup className={classes.title}>
           <FormControlLabel
             control={
@@ -125,30 +125,19 @@ export default function MenuAppBar({ auth, setAuth }) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClose}>My Favorites</MenuItem>
               <MenuItem onClick={handleLogOut}>Log out</MenuItem>
             </Menu>
           </div>
         ) : (
           <>
-            <Link to="/signup">
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                className={classes.button}
-              >
+            <Link to="/signup" className={classes.button}>
+              <Button variant="contained" color="secondary" size="small">
                 Sign up
               </Button>
             </Link>
-            <Link to="/signin">
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                className={classes.button}
-              >
+            <Link to="/signin" className={classes.button}>
+              <Button variant="contained" color="primary" size="small">
                 Sign In
               </Button>
             </Link>
