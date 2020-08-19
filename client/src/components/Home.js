@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import SearchBar from './components/SearchBar';
-import NavBar from './components/NavBar';
-import RecipeList from "./components/RecipeList";
-import Footer from "./components/Footer";
+import SearchBar from './SearchBar';
+import NavBar from './NavBar';
+import RecipeList from "./RecipeList";
+import Footer from "./Footer";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";
 import { grey } from "@material-ui/core/colors";
-import API from "./config/api";
-import data from "./dummyData";
+import API from "../config/api";
+import data from "../dummyData";
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import ScrollTop from './components/ScrollTop'
+import ScrollTop from './ScrollTop'
 
 const URL = API.edamamUrl;
 
@@ -40,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 'auto'      
   },
 }));
-function App(props) {
+function Home(props) {
+  const {auth, setAuth} = props;
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
@@ -59,7 +60,7 @@ function App(props) {
       <CssBaseline />
       <Grid className={classes.root} container direction="column" >
         <Grid className={classes.contentWrap} container direction="column">
-        <NavBar />
+        <NavBar auth={auth} setAuth={setAuth}/>
         <SearchBar />
           {loading && (
             <CircularProgress className={classes.spinner} size={100} />
@@ -77,4 +78,4 @@ function App(props) {
   );
 }
 
-export default App;
+export default Home;

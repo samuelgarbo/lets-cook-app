@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -14,6 +13,8 @@ import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Fade from "@material-ui/core/Fade";
+import { Link } from "react-router-dom";
+import { ReactComponent as Logo } from "../assets/logo.svg";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -33,11 +34,16 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     backgroundColor: "rgba(236,239,241,.7)",
   },
+  logo: {
+    marginRight: theme.spacing(2),
+    cursor: "pointer",
+    height: "50px",
+    width: "100px"
+  },
 }));
 
-export default function MenuAppBar() {
+export default function MenuAppBar({ auth, setAuth }) {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -51,6 +57,11 @@ export default function MenuAppBar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogOut = () => {
+    setAuth(false);
+    handleClose();
   };
 
   const trigger = useScrollTrigger({
@@ -72,6 +83,10 @@ export default function MenuAppBar() {
         >
           <MenuIcon />
         </IconButton>
+        <Link to='/'>
+          <Logo className={classes.logo} />
+        </Link>
+
         <FormGroup className={classes.title}>
           <FormControlLabel
             control={
@@ -83,7 +98,7 @@ export default function MenuAppBar() {
             }
             label={auth ? "Logout" : "Login"}
           />
-        </FormGroup>       
+        </FormGroup>
         {auth ? (
           <div>
             <IconButton
@@ -112,26 +127,31 @@ export default function MenuAppBar() {
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleLogOut}>Log out</MenuItem>
             </Menu>
           </div>
         ) : (
           <>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              className={classes.button}
-            >
-              Sign up
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              className={classes.button}
-            >
-              Log In
-            </Button>
+            <Link to="/signup">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+              >
+                Sign up
+              </Button>
+            </Link>
+            <Link to="/signin">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+              >
+                Sign In
+              </Button>
+            </Link>
           </>
         )}
       </Toolbar>
