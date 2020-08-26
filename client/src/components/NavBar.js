@@ -11,15 +11,14 @@ import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
+import Hidden from "@material-ui/core/Hidden";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Fade from "@material-ui/core/Fade";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { ReactComponent as Logo } from "../assets/logo.svg";
 
 const useStyles = makeStyles((theme) => ({
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
+ 
   title: {
     flexGrow: 1,
   },
@@ -43,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MenuAppBar({ auth, setAuth }) {
-  const classes = useStyles();
+function NavBar({ auth, setAuth, history, location }) {
+  const classes = useStyles();  
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -65,6 +64,16 @@ export default function MenuAppBar({ auth, setAuth }) {
     handleClose();
   };
 
+  const handleSignIn = () =>{
+    handleClose();
+    history.push('/signin')
+  };
+
+  const handleSignUp = () =>{
+    handleClose();
+    history.push('/signup')
+  }
+
   const trigger = useScrollTrigger({
     // target: window ? window() : undefined,
     disableHysteresis: true,
@@ -76,14 +85,6 @@ export default function MenuAppBar({ auth, setAuth }) {
         <div className={classes.overlay} />
       </Fade>
       <Toolbar>
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          color="inherit"
-          aria-label="menu"
-        >
-          <MenuIcon />
-        </IconButton>
         <Link to="/">
           <Logo className={classes.logo} />
         </Link>
@@ -131,19 +132,51 @@ export default function MenuAppBar({ auth, setAuth }) {
           </div>
         ) : (
           <>
-            <Link to="/signup" className={classes.button}>
-              <Button variant="contained" color="secondary" size="small">
-                Sign up
-              </Button>
-            </Link>
-            <Link to="/signin" className={classes.button}>
-              <Button variant="contained" color="primary" size="small">
-                Sign In
-              </Button>
-            </Link>
+            <Hidden xsDown>
+              <Link to="/signup" className={classes.button}>
+                <Button variant="contained" color="secondary" size="small">
+                  Sign up
+                </Button>
+              </Link>
+              <Link to="/signin" className={classes.button}>
+                <Button variant="contained" color="primary" size="small">
+                  Sign In
+                </Button>
+              </Link>
+            </Hidden>
+            <Hidden smUp>
+              <IconButton
+                edge="start"              
+                color="inherit"
+                aria-controls="menu"
+                aria-haspopup="true"
+                onClick={handleMenu}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+              id="menu"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={open}
+              onClose={handleClose}
+            >              
+              <MenuItem onClick={handleSignUp}>Sign Up</MenuItem>              
+              <MenuItem onClick={handleSignIn}>Sign In</MenuItem>
+            </Menu>
+            </Hidden>
           </>
         )}
       </Toolbar>
     </AppBar>
   );
 }
+export default withRouter(NavBar);

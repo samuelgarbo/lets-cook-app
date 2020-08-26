@@ -3,15 +3,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import LinkM from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import NavBar from './NavBar';
 import {Link} from 'react-router-dom';
 
 
@@ -35,15 +31,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn({auth, setAuth}) {
+export default function SignIn({setAuth}) {
   const classes = useStyles();
 
   const handleSignIn = () => {
     setAuth(true)
   }
   return (
-    <Container component="main" maxWidth="xs">
-    <NavBar auth={auth} setAuth={setAuth}/>
+    <Container component="main" maxWidth="xs">   
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -75,10 +70,10 @@ export default function SignIn({auth, setAuth}) {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
@@ -90,9 +85,9 @@ export default function SignIn({auth, setAuth}) {
           </Button>
           <Grid container>
             <Grid item xs>
-              <LinkM href="#" variant="body2">
+              {/* <LinkM href="#" variant="body2">
                 Forgot password?
-              </LinkM>
+              </LinkM> */}
             </Grid>
             <Grid item>
               <Link to='/signup'>                

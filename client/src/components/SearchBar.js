@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.common.white,
-    marginBottom: theme.spacing(4),
     paddingTop: theme.spacing(4),
     backgroundImage:
       "url(https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80)",

@@ -7,34 +7,54 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 250,
-    margin: theme.spacing(1),
+  root: {   
+    margin: theme.spacing(1),  
+    width: 250,
+    [theme.breakpoints.down("sm")]:{
+      width: 200,       
+    },
+    [theme.breakpoints.down("xs")]:{
+      width: 150,
+      margin: '2px'          
+    }    
   },  
   media: {
     width: 250,
     height: 170,
-  },
-  clickable: {
-    cursor: "pointer",
-  },
+    [theme.breakpoints.down("sm")]:{
+      width: 200,
+      height: 136
+    },
+    [theme.breakpoints.down("xs")]:{
+      width: 150,
+      height: 102
+    },
+  },  
+  title:{
+   padding: theme.spacing(1)
+  }
 }));
 
-function RecipeCard({ recipe }) {
+function RecipeCard({ recipe, goToRecipe }) {
   const classes = useStyles();
-  const { label, image } = recipe.recipe;
+  const { label, image, uri } = recipe;
+ 
 
-  return (
-    
-    <Card className={classes.root} elevation={5}>
+  const handleGoToRecipe = (e) =>{
+    let id =label.replace(/\s/g,"-").replace(/[()]/g,"").toLowerCase()
+    goToRecipe(id)
+  }
+
+  return (   
+    <Card className={classes.root} elevation={5} onClick={handleGoToRecipe}>
       <CardActionArea>
         <CardMedia image={image} title={label} className={classes.media} />
-        <CardContent>
-          <Typography align="center">{label}</Typography>
-          
+        <CardContent classes={{root: classes.title}}>
+          <Typography align="center" variant='subtitle2'>{label}</Typography>          
         </CardContent>
       </CardActionArea>
     </Card>
+   
     
   );
 }
