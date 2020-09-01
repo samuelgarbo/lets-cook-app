@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Home from "./components/Home";
-import SignUp from "./components/SignUp";
-import SignIn from "./components/SignIn";
+import RecipeSearch from "./pages/RecipeSearch/RecipeSearch";
+import SignUp from "./pages/SignUp/SignUp";
+import SignIn from "./pages/SignIn/SignIn";
 import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 import Footer from "./components/Footer";
-import Recipe from "./components/Recipe";
+import Recipe from "./pages/Recipe/Recipe";
 import data from "./dummyData";
 import API from "./config/api";
 import { Route, Switch } from "react-router-dom";
@@ -13,6 +13,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import { grey } from "@material-ui/core/colors";
+import ScrollTop from "./components/ScrollTop";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,13 +61,13 @@ function App(props) {
       <NavBar auth={auth} setAuth={setAuth} />
       <SearchBar />
       <Grid className={classes.root} container direction="column">
-        <Grid className={classes.contentWrap} container direction="column">
+        <Grid className={classes.contentWrap} container direction="column" >
           <Switch>
             <Route
               exact
               path="/"
               render={() => (
-                <Home
+                <RecipeSearch
                   loading={loading}
                   recipes={recipes}
                   auth={auth}
@@ -91,6 +93,7 @@ function App(props) {
           </Switch>
         </Grid>
         <Footer className={classes.footer} />
+        <ScrollTop {...props}/>
       </Grid>
     </>
   );

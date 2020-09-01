@@ -37,6 +37,7 @@ export default function DenseTable({ totalNutrients, totalWeight }) {
         className={classes.table}
         size="small"
         aria-label="nutrition values"
+        padding='none'
       >
         <TableHead>
           <TableRow>

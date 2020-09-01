@@ -34,26 +34,25 @@ const useStyles = makeStyles((theme) => ({
   logoContainer: {
     marginBottom: theme.spacing(3),
     [theme.breakpoints.down("sm")]: {
-      marginTop: theme.spacing(3)     
-    },  
-    [theme.breakpoints.down("xs")]: {     
-      marginTop: 0
-    },  
+      marginTop: theme.spacing(3),
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginTop: 0,
+    },
   },
   logo: {
     [theme.breakpoints.down("xl")]: {
-      width: '300px',
-      height: '90px'
-    },  
+      width: "300px",
+      height: "90px",
+    },
     [theme.breakpoints.down("sm")]: {
-      width: '200px',
-      height: '60px'
-    },  
+      width: "200px",
+      height: "60px",
+    },
     [theme.breakpoints.down("xs")]: {
-      display:'none'
-    },  
-    
-  }
+      display: "none",
+    },
+  },
 }));
 
 export default function SearchBar(props) {
@@ -62,11 +61,22 @@ export default function SearchBar(props) {
   return (
     <div className={classes.root}>
       <div className={classes.overlay} />
-      <Grid container justify='center' className={classes.searchBar} id="back-to-top-anchor">
-        <Grid item container justify="center" xs={12} className={classes.logoContainer}>
-          <Logo className={classes.logo}/>
+      <Grid
+        container
+        justify="center"
+        className={classes.searchBar}
+        id="back-to-top-anchor"
+      >
+        <Grid
+          item
+          container
+          justify="center"
+          xs={12}
+          className={classes.logoContainer}
+        >
+          <Logo className={classes.logo} />
         </Grid>
-        <Grid item xs={10} md={6}>
+        <Grid item xs={10} md={6} id="search-field">
           <Paper>
             <TextField
               variant="outlined"
@@ -74,6 +84,7 @@ export default function SearchBar(props) {
               color="primary"
               fullWidth
               autoFocus
+              
             />
           </Paper>
         </Grid>

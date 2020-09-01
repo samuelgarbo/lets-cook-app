@@ -163,6 +163,7 @@ function Recipe(props) {
       direction="column"
       alignItems="center"
       className={classes.root}
+      id="recipe-title"
     >
       {/* Recipe title */}
       <Grid item xs className={classes.title}>

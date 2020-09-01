@@ -6,10 +6,14 @@ import {useHistory} from 'react-router-dom';
 
 function RecipeList(props) {
   const {recipes} = props;
-  const history = useHistory();
+  const history = useHistory(); 
   
-  const goToRecipe = (id) => {
-    history.push(`/recipe/${id}`)
+  const goToRecipe = (id) => {    
+    history.push(`/recipe/${id}`)  
+    const anchor = document.querySelector('#search-field'); 
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } 
   };
   return (
     <Container maxWidth="lg" disableGutters={true}>
