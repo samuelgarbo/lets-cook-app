@@ -24,7 +24,5 @@ yarn-error.log*
 
 /config
 dummyData.js
-/blog
-/sign-in
-/sign-up
 /.vscode
+.env

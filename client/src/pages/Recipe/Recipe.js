@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { useParams } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -7,6 +7,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import RecipeTable from "./RecipeTable";
+import { DataContext } from "../../context/DataContext";
 
 const method = [
   "Sequi aut iusto nisi possimus incidunt ut. Illo qui rerum cupiditate ut omnis cumque et dolore. Corporis et delectus quo.",
@@ -136,9 +137,8 @@ function FoodImage({ image, label }) {
   );
 }
 function Recipe(props) {
-  const { recipes } = props;
-  const { id } = useParams();
-
+  const { recipes } = useContext(DataContext);
+  const { id } = useParams();  
   const classes = useStyles();
 
   let recipe = recipes.filter((recipe) => {
@@ -157,13 +157,13 @@ function Recipe(props) {
     totalNutrients,
     totalWeight,
   } = recipe;
+  
   return (
     <Grid
       container
       direction="column"
       alignItems="center"
-      className={classes.root}
-      id="recipe-title"
+      className={classes.root}      
     >
       {/* Recipe title */}
       <Grid item xs className={classes.title}>

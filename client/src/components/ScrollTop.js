@@ -13,8 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ScrollTop(props) {
-  const { children } = props;
+export default function ScrollTop(props) { 
   const classes = useStyles();
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.

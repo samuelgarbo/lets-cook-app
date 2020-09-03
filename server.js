@@ -1,16 +1,14 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const recipeRoutes = require('./routes/recipes');
-const userRoutes = require('./routes/users');
-
-const PORT = process.env.PORT || 5000;
+const cors = require('cors')
+const commentRoutes = require("./routes/comments");
+const userRoutes = require("./routes/users");
+const config = require("./config/default");
 
 app.use(express.json());
+app.use(cors());
 
-app.use('/api/users', userRoutes);
-app.use('/api/recipes', recipeRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/comments", commentRoutes);
 
-app.listen(PORT, () => console.log('App is running on port ' + PORT))
-
-
-
+app.listen(config.PORT, () => console.log("App is running on port " + config.PORT));

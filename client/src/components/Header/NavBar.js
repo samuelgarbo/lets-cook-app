@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,10 +15,10 @@ import Hidden from "@material-ui/core/Hidden";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Fade from "@material-ui/core/Fade";
 import { Link, withRouter } from "react-router-dom";
-import { ReactComponent as Logo } from "../assets/logo.svg";
+import { ReactComponent as Logo } from "../../assets/logo.svg";
+import {AuthContext} from "../../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
- 
   title: {
     flexGrow: 1,
   },
@@ -42,8 +42,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NavBar({ auth, setAuth, history, location }) {
-  const classes = useStyles();  
+function NavBar({ history }) {
+  const classes = useStyles();
+  const {auth, setAuth} = useContext(AuthContext)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -64,15 +65,15 @@ function NavBar({ auth, setAuth, history, location }) {
     handleClose();
   };
 
-  const handleSignIn = () =>{
+  const handleSignIn = () => {
     handleClose();
-    history.push('/signin')
+    history.push("/signin");
   };
 
-  const handleSignUp = () =>{
+  const handleSignUp = () => {
     handleClose();
-    history.push('/signup')
-  }
+    history.push("/signup");
+  };
 
   const trigger = useScrollTrigger({
     // target: window ? window() : undefined,
@@ -146,7 +147,7 @@ function NavBar({ auth, setAuth, history, location }) {
             </Hidden>
             <Hidden smUp>
               <IconButton
-                edge="start"              
+                edge="start"
                 color="inherit"
                 aria-controls="menu"
                 aria-haspopup="true"
@@ -155,23 +156,23 @@ function NavBar({ auth, setAuth, history, location }) {
                 <MenuIcon />
               </IconButton>
               <Menu
-              id="menu"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={open}
-              onClose={handleClose}
-            >              
-              <MenuItem onClick={handleSignUp}>Sign Up</MenuItem>              
-              <MenuItem onClick={handleSignIn}>Sign In</MenuItem>
-            </Menu>
+                id="menu"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleSignUp}>Sign Up</MenuItem>
+                <MenuItem onClick={handleSignIn}>Sign In</MenuItem>
+              </Menu>
             </Hidden>
           </>
         )}

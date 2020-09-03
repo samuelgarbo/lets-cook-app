@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const config = require('config');
+const config = require("../config/default");
 mongoose.set('debug', true);
 
-const CONNECTION = process.env.MONGODB_URI || config.get('mongoURI');
+const CONNECTION = config.mongoURI;
+
 mongoose.connect(CONNECTION, {
     useNewUrlParser: true, 
     useUnifiedTopology: true, 
@@ -11,7 +12,7 @@ mongoose.connect(CONNECTION, {
     .then(() => console.log('Database connected'))
     .catch(err => console.log(err))
 
-module.exports.Recipe = require('./recipe')
+module.exports.Comment = require('./comment')
 module.exports.User = require('./user')
 
 

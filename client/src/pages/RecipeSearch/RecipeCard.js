@@ -37,9 +37,9 @@ const useStyles = makeStyles((theme) => ({
 
 function RecipeCard({ recipe, goToRecipe }) {
   const classes = useStyles();
-  const { label, image, uri } = recipe;
+  const { label, image } = recipe;
 
-  const handleGoToRecipe = (event) => {
+  const handleGoToRecipe = () => {
     let id = label.replace(/\s/g, "-").replace(/[()]/g, "").toLowerCase();
     goToRecipe(id);
   };

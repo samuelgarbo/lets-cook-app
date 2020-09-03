@@ -1,11 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import Grid from "@material-ui/core/Grid";
 import RecipeCard from "./RecipeCard";
 import Container from "@material-ui/core/Container";
 import {useHistory} from 'react-router-dom';
+import { DataContext } from "../../context/DataContext";
 
 function RecipeList(props) {
-  const {recipes} = props;
+  const {recipes} = useContext(DataContext);
   const history = useHistory(); 
   
   const goToRecipe = (id) => {    
