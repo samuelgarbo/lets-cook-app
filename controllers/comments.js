@@ -42,7 +42,8 @@ router.post("/", (req, res) => {
 // @access  Public
 router.get("/:commentId", (req, res) => {
   const { commentId } = req.params;
-  db.Comment.findById(commentId).populate('user')    
+  db.Comment.findById(commentId)
+    .populate("user")
     .then((comment) => {
       res.json(comment);
     })
@@ -56,7 +57,21 @@ router.get("/:commentId", (req, res) => {
 // @access  Public
 router.get("/user/:userId", (req, res) => {
   const { userId } = req.params;
-  db.Comment.find({user: userId})   
+  db.Comment.find({ user: userId })
+    .then((comments) => {
+      res.json(comments);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+// @route   GET api/comments/recipe/:label
+// @desc    Get comments by recipe label
+// @access  Public
+router.get("/recipe/:label", (req, res) => {
+  const { label } = req.params;
+  db.Comment.find({ recipe: label })
+    .populate("user", "-password")
     .then((comments) => {
       res.json(comments);
     })
@@ -65,7 +80,7 @@ router.get("/user/:userId", (req, res) => {
     });
 });
 
-// @route   PUT api/recipes/:recipeId
+// @route   PUT api/comments/:commentId
 // @desc    Update one Comment
 // @access  Public
 router.put("/:commentId", (req, res) => {

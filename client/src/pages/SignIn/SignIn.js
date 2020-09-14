@@ -1,29 +1,31 @@
-import React, {useContext} from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import {Link} from 'react-router-dom';
+import React, { useContext } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import api from "../../api/user";
+import setInputState from "../../hooks/setInputState";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -31,15 +33,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn({ history }) {
+  const [email, setEmail, resetEmail] = setInputState("");
+  const [password, setPassword, resetPassword] = setInputState("");
   const classes = useStyles();
-  const {setAuth}=useContext(AuthContext)
+  const { setAuth, setUser } = useContext(AuthContext);
 
-  const handleSignIn = () => {
-    setAuth(true)
-  }
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+
+    const res = await api.loginUser({ email, password });
+    if (!res._id) {
+      resetPassword();
+    } else {
+      setAuth(true);
+      setUser({
+        _id: res._id,
+        firstName: res.firstName,
+        lastName: res.lastName,
+      });
+      resetEmail();
+      resetPassword();
+
+      history.goBack();
+    }
+  };
   return (
-    <Container component="main" maxWidth="xs">   
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -48,7 +68,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSignIn}>
+        <form className={classes.form} onSubmit={handleSignIn}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -59,6 +79,8 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={email}
+            onChange={setEmail}
           />
           <TextField
             variant="outlined"
@@ -70,34 +92,26 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password}
+            onChange={setPassword}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}            
+            className={classes.submit}
           >
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              {/* <LinkM href="#" variant="body2">
-                Forgot password?
-              </LinkM> */}
-            </Grid>
+            <Grid item xs></Grid>
             <Grid item>
-              <Link to='/signup'>                
-                  {"Don't have an account? Sign Up"}               
-              </Link>
+              <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
         </form>
-      </div>      
+      </div>
     </Container>
   );
 }

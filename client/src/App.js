@@ -6,7 +6,6 @@ import NavBar from "./components/Header/NavBar";
 import SearchBar from "./components/Header/SearchBar";
 import Footer from "./components/Footer";
 import Recipe from "./pages/Recipe/Recipe";
-import API from "./config/api";
 import { Route, Switch } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const URL = API.edamamUrl;
 
 function App(props) {
   const classes = useStyles();

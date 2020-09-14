@@ -13,13 +13,9 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
 function roundToDecimal(num) {
   return Math.round((num + Number.EPSILON) * 10) / 10;
 }
-const rows = [createData("Frozen yoghurt", 159, 6.0, 24, 4.0)];
 
 export default function DenseTable({ totalNutrients, totalWeight }) {
   const classes = useStyles();
@@ -37,7 +33,7 @@ export default function DenseTable({ totalNutrients, totalWeight }) {
         className={classes.table}
         size="small"
         aria-label="nutrition values"
-        padding='none'
+        padding="none"
       >
         <TableHead>
           <TableRow>

@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -8,6 +8,13 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import RecipeTable from "./RecipeTable";
 import { DataContext } from "../../context/DataContext";
+import CommentForm from "./CommentForm";
+import CommentList from "./CommentList";
+import commentsAPI from "../../api/comments";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { AuthContext } from "../../context/AuthContext";
+import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
+import FavoriteBorderRoundedIcon from "@material-ui/icons/FavoriteBorderRounded";
 
 const method = [
   "Sequi aut iusto nisi possimus incidunt ut. Illo qui rerum cupiditate ut omnis cumque et dolore. Corporis et delectus quo.",
@@ -75,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: "column",
     },
   },
+  favorite: {},
 }));
 function IngredientList({ ingredientLines }) {
   const classes = useStyles();
@@ -110,12 +118,12 @@ function MethodList({ method }) {
     </Grid>
   );
 }
-function Yield({ recipe }) {
+function Yield({ servings }) {
   const classes = useStyles();
   return (
     <Grid item xs className={classes.yield}>
-      <Typography variant="subtitle2">Yield:</Typography>
-      <Typography variant="body2">{recipe["yield"]}</Typography>
+      <Typography variant="subtitle2">Servings:</Typography>
+      <Typography variant="body2">{servings}</Typography>
     </Grid>
   );
 }
@@ -136,19 +144,39 @@ function FoodImage({ image, label }) {
     </Grid>
   );
 }
-function Recipe(props) {
-  const { recipes } = useContext(DataContext);
-  const { id } = useParams();  
-  const classes = useStyles();
-
-  let recipe = recipes.filter((recipe) => {
+function recipeFilter(recipes, id) {
+  const recipe = recipes.filter((recipe) => {
     let name = recipe.recipe.label
       .replace(/\s/g, "-")
       .replace(/[()]/g, "")
       .toLowerCase();
     return name === id;
   })[0].recipe;
+  return recipe;
+}
+function Recipe(props) {
+  const { recipes, loading, setLoading, favorites } = useContext(DataContext);
+  const { auth } = useContext(AuthContext);
+  const [comments, setComments] = useState([]);
+  const { id } = useParams();
+  const classes = useStyles();
 
+  const getComments = async (id) => {
+    setLoading(true);
+    const response = await commentsAPI.searchComments(id);
+    setComments(response);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    getComments(id);
+  }, []);
+
+  console.log(favorites);
+  //search for recipe from recipe list
+  let recipe = recipeFilter(recipes, id);
   const {
     label,
     totalTime,
@@ -157,14 +185,18 @@ function Recipe(props) {
     totalNutrients,
     totalWeight,
   } = recipe;
-  
+
   return (
     <Grid
       container
       direction="column"
       alignItems="center"
-      className={classes.root}      
+      className={classes.root}
     >
+      <FavoriteBorderRoundedIcon
+        fontSize="large"
+        className={classes.favorite}
+      />
       {/* Recipe title */}
       <Grid item xs className={classes.title}>
         <Typography variant="h4" component="h1" align="center" gutterBottom>
@@ -176,7 +208,7 @@ function Recipe(props) {
         <FoodImage image={image} label={label} />
         <Grid item xs container direction="column">
           <PreparationTime totalTime={totalTime} />
-          <Yield recipe={recipe} />
+          <Yield servings={recipe["yield"]} />
         </Grid>
       </Grid>
       {/* Ingredients and method */}
@@ -184,7 +216,11 @@ function Recipe(props) {
         <IngredientList ingredientLines={ingredientLines} />
         <MethodList method={method} />
       </Grid>
+      {/* Nutrients table */}
       <RecipeTable totalNutrients={totalNutrients} totalWeight={totalWeight} />
+      {/* Comments */}
+      {loading ? <CircularProgress /> : <CommentList comments={comments} />}
+      {auth && <CommentForm recipe={id} />}
     </Grid>
   );
 }

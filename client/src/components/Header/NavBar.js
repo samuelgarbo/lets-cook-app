@@ -16,7 +16,7 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Fade from "@material-ui/core/Fade";
 import { Link, withRouter } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
-import {AuthContext} from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NavBar({ history }) {
   const classes = useStyles();
-  const {auth, setAuth} = useContext(AuthContext)
+  const { auth, setAuth, setUser } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -61,8 +61,9 @@ function NavBar({ history }) {
   };
 
   const handleLogOut = () => {
-    setAuth(false);
     handleClose();
+    setAuth(false);
+    setUser({});
   };
 
   const handleSignIn = () => {
