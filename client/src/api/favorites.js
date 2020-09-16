@@ -28,6 +28,7 @@ const addFavorite = async (recipe) => {
     totalNutrients,
     totalWeight,
     user,
+    uri,
   } = recipe;
   const favorite = {
     label,
@@ -38,10 +39,10 @@ const addFavorite = async (recipe) => {
     totalNutrients,
     totalWeight,
     user,
+    uri,
   };
-  const config = { contentType: "application-json" };
-  const response = await api.post(`/favorites`, favorite, config);
-
+  const config = { contentType: "application/json" };
+  const response = await api.post("/favorites", favorite, config);
   return response.data;
 };
 

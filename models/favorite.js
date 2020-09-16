@@ -6,6 +6,10 @@ const favoriteSchema = new Schema({
     type: String,
     required: true,
   },
+  uri: {
+    type: String,
+    required: true,
+  },
   totalTime: {
     type: Number,
     required: true,

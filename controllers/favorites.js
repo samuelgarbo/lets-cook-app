@@ -16,11 +16,12 @@ router.get("/", (req, res) => {
 });
 
 // @route   POST api/favorites
-// @desc    Post new favorite
+// @desc    Add new favorite
 // @access  Public
 router.post("/", async (req, res) => {
   const {
     label,
+    uri,
     totalTime,
     image,
     ingredientLines,
@@ -32,15 +33,17 @@ router.post("/", async (req, res) => {
   //simple validation
   if (
     !label ||
-    !totalTime ||
+    !totalTime < 0 ||
     !image ||
     !ingredientLines ||
     !totalNutrients ||
     !totalWeight ||
     !yield ||
-    !user
-  )
-    return res.status(400).json({ error: "Please enter all fields" });
+    !user ||
+    !uri
+  ) {
+    return res.status(200).json({ error: "Please enter all fields" });
+  }
 
   const existingFavorite = await db.Favorite.findOne({
     label: label,
@@ -57,11 +60,13 @@ router.post("/", async (req, res) => {
       totalWeight,
       yield,
       user,
+      uri,
     })
       .then((favorite) => {
         res.status(201).json(favorite);
       })
       .catch((err) => {
+        console.log("error");
         res.send(err);
       });
   } else {

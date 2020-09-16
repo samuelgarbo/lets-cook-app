@@ -85,6 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
   favorite: {
     color: "red",
+    cursor: "pointer",
   },
 }));
 function IngredientList({ ingredientLines }) {
@@ -163,6 +164,7 @@ function Recipe(props) {
     favorites,
     loadingComments,
     setLoadingComments,
+    getFavorites,
   } = useContext(DataContext);
   const { auth, user } = useContext(AuthContext);
   const [comments, setComments] = useState([]);
@@ -179,6 +181,7 @@ function Recipe(props) {
     ingredientLines,
     totalNutrients,
     totalWeight,
+    uri,
   } = recipe;
 
   const isFavorite = () => {
@@ -205,16 +208,23 @@ function Recipe(props) {
       totalWeight,
       yield: recipe["yield"],
       user: user._id,
+      uri,
     };
     favoritesAPI
       .addFavorite(favorite)
-      .then((res) => setFav(true))
+      .then((res) => {
+        setFav(true);
+        getFavorites();
+      })
       .catch((e) => console.log(e));
   };
   const handleRemoveFav = () => {
     favoritesAPI
       .removeFavorite(id)
-      .then((res) => setFav(false))
+      .then((res) => {
+        setFav(false);
+        getFavorites();
+      })
       .catch((e) => console.log(e));
   };
   useEffect(() => {
@@ -229,19 +239,20 @@ function Recipe(props) {
       alignItems="center"
       className={classes.root}
     >
-      {fav ? (
-        <FavoriteRoundedIcon
-          onClick={handleRemoveFav}
-          fontSize="large"
-          className={classes.favorite}
-        />
-      ) : (
-        <FavoriteBorderRoundedIcon
-          onClick={handleAddFav}
-          fontSize="large"
-          className={classes.favorite}
-        />
-      )}
+      {auth &&
+        (fav ? (
+          <FavoriteRoundedIcon
+            onClick={handleRemoveFav}
+            fontSize="large"
+            className={classes.favorite}
+          />
+        ) : (
+          <FavoriteBorderRoundedIcon
+            onClick={handleAddFav}
+            fontSize="large"
+            className={classes.favorite}
+          />
+        ))}
 
       {/* Recipe title */}
       <Grid item xs className={classes.title}>

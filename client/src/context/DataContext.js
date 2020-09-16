@@ -29,17 +29,15 @@ export function DataProvider(props) {
   //   loadData()
   // }, []);
   const getFavorites = async () => {
+    setLoading(true);
     const user = JSON.parse(localStorage.getItem("user"));
     const response = await favoritesAPI.getFavoritesByUserId(user._id);
     setFavorites(response);
+    setLoading(false);
   };
   const loadData = () => {
-    setLoading(true);
-    console.log("loading");
     setRecipes([...data.hits]);
     getFavorites();
-    setLoading(false);
-    console.log("ready");
   };
   const fetchRecipes = async (param) => {
     setLoading(true);
@@ -61,6 +59,7 @@ export function DataProvider(props) {
         loadingComments,
         setLoadingComments,
         fetchRecipes,
+        getFavorites,
       }}
     >
       {props.children}

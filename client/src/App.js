@@ -6,6 +6,7 @@ import NavBar from "./components/Header/NavBar";
 import SearchBar from "./components/Header/SearchBar";
 import Footer from "./components/Footer";
 import Recipe from "./pages/Recipe/Recipe";
+import MyFavorites from "./pages/MyFavorites/MyFavorites";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -47,6 +48,7 @@ function App(props) {
                 <Route exact path="/recipe/:id" component={Recipe} />
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/signin" component={SignIn} />
+                <Route exact path="/myfavorites" component={MyFavorites} />
                 <Route path="/">
                   <Redirect to="/"></Redirect>
                 </Route>

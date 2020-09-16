@@ -17,6 +17,7 @@ import Fade from "@material-ui/core/Fade";
 import { Link, withRouter } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { AuthContext } from "../../context/AuthContext";
+import { DataContext } from "../../context/DataContext";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 function NavBar({ history }) {
   const classes = useStyles();
   const { auth, setAuth, setUser } = useContext(AuthContext);
+  const { getFavorites } = useContext(DataContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -60,6 +62,11 @@ function NavBar({ history }) {
     setAnchorEl(null);
   };
 
+  const handleMyFavorites = () => {
+    handleClose();
+    getFavorites();
+    history.push("/myfavorites");
+  };
   const handleLogOut = () => {
     handleClose();
     setAuth(false);
@@ -128,7 +135,7 @@ function NavBar({ history }) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>My Favorites</MenuItem>
+              <MenuItem onClick={handleMyFavorites}>My Favorites</MenuItem>
               <MenuItem onClick={handleLogOut}>Log out</MenuItem>
             </Menu>
           </div>
