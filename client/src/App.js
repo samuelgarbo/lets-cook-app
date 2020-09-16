@@ -6,7 +6,7 @@ import NavBar from "./components/Header/NavBar";
 import SearchBar from "./components/Header/SearchBar";
 import Footer from "./components/Footer";
 import Recipe from "./pages/Recipe/Recipe";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 function App(props) {
   const classes = useStyles();
 
@@ -48,6 +47,9 @@ function App(props) {
                 <Route exact path="/recipe/:id" component={Recipe} />
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/signin" component={SignIn} />
+                <Route path="/">
+                  <Redirect to="/"></Redirect>
+                </Route>
               </Switch>
             </Grid>
             <Footer className={classes.footer} />

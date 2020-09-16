@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import data from "../dummyData";
 import favoritesAPI from "../api/favorites";
+import recipesAPI from "../api/recipes";
 
 export const DataContext = createContext();
 
@@ -11,8 +12,9 @@ export const DataContext = createContext();
 // });
 
 export function DataProvider(props) {
-  const [recipes, setRecipes] = useState([...data.hits]);
+  const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const [favorites, setFavorites] = useState([]);
   // const url = config.edamamAPI
   // const loadData=()=>{
@@ -27,15 +29,40 @@ export function DataProvider(props) {
   //   loadData()
   // }, []);
   const getFavorites = async () => {
-    const response = await favoritesAPI.getFavorites();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const response = await favoritesAPI.getFavoritesByUserId(user._id);
     setFavorites(response);
   };
-  useEffect(() => {
+  const loadData = () => {
+    setLoading(true);
+    console.log("loading");
+    setRecipes([...data.hits]);
     getFavorites();
+    setLoading(false);
+    console.log("ready");
+  };
+  const fetchRecipes = async (param) => {
+    setLoading(true);
+    const response = await recipesAPI.getRecipesByParam(param);
+    setRecipes([...response.hits]);
+    setLoading(false);
+  };
+  useEffect(() => {
+    loadData();
   }, []);
 
   return (
-    <DataContext.Provider value={{ recipes, loading, setLoading, favorites }}>
+    <DataContext.Provider
+      value={{
+        recipes,
+        loading,
+        setLoading,
+        favorites,
+        loadingComments,
+        setLoadingComments,
+        fetchRecipes,
+      }}
+    >
       {props.children}
     </DataContext.Provider>
   );

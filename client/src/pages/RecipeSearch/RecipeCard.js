@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    cursor: "pointer",
     margin: theme.spacing(1),
     width: 250,
     [theme.breakpoints.down("sm")]: {
@@ -40,6 +41,7 @@ function RecipeCard({ recipe, goToRecipe }) {
   const { label, image } = recipe;
 
   const handleGoToRecipe = () => {
+    //replace white space and brackets to -
     let id = label.replace(/\s/g, "-").replace(/[()]/g, "").toLowerCase();
     goToRecipe(id);
   };

@@ -87,19 +87,19 @@ router.post("/", async (req, res) => {
 //     });
 // });
 
-// // @route   GET api/comments/user/:userId
-// // @desc    Get comments by user id
-// // @access  Public
-// router.get("/user/:userId", (req, res) => {
-//   const { userId } = req.params;
-//   db.Comment.find({ user: userId })
-//     .then((comments) => {
-//       res.json(comments);
-//     })
-//     .catch((err) => {
-//       res.send(err);
-//     });
-// });
+// @route   GET api/favorites/user/:userId
+// @desc    Get favorites by user id
+// @access  Public
+router.get("/user/:userId", (req, res) => {
+  const { userId } = req.params;
+  db.Favorite.find({ user: userId })
+    .then((favorites) => {
+      res.json(favorites);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
 // // @route   GET api/comments/recipe/:label
 // // @desc    Get comments by recipe label
 // // @access  Public
@@ -132,9 +132,9 @@ router.post("/", async (req, res) => {
 // @route   DELETE api/favorites/:favoriteId
 // @desc    Remove one favorite
 // @access  Public
-router.delete("/:favoriteId", (req, res) => {
-  const { favoriteId } = req.params;
-  db.Favorite.findByIdAndDelete(favoriteId)
+router.delete("/recipe/:recipe", (req, res) => {
+  const { recipe } = req.params;
+  db.Favorite.findOneAndDelete({ label: recipe })
     .then((deletedFavorite) => {
       res.json(deletedFavorite);
     })

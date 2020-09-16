@@ -12,8 +12,9 @@ export function AuthProvider(props) {
   });
 
   useEffect(() => {
-    window.localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
+
   return (
     <AuthContext.Provider value={{ auth, setAuth, setUser, user }}>
       {props.children}

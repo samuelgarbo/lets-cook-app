@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
+import { withRouter } from "react-router-dom";
+import setInputState from "../../hooks/setInputState";
+import { DataContext } from "../../context/DataContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,8 +58,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar(props) {
+function SearchBar() {
   const classes = useStyles();
+  const [input, setInput, resetInput] = setInputState("");
+  const { fetchRecipes } = useContext(DataContext);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchRecipes(input);
+    resetInput();
+  };
 
   return (
     <div className={classes.root}>
@@ -76,19 +87,24 @@ export default function SearchBar(props) {
         >
           <Logo className={classes.logo} />
         </Grid>
+
         <Grid item xs={10} md={6} id="search-field">
-          <Paper>
-            <TextField
-              variant="outlined"
-              placeholder="What shall we cook?"
-              color="primary"
-              fullWidth
-              autoFocus
-              
-            />
-          </Paper>
+          <form onSubmit={handleSearch}>
+            <Paper>
+              <TextField
+                variant="outlined"
+                placeholder="What shall we cook?"
+                color="primary"
+                fullWidth
+                autoFocus
+                value={input}
+                onChange={setInput}
+              />
+            </Paper>
+          </form>
         </Grid>
       </Grid>
     </div>
   );
 }
+export default withRouter(SearchBar);

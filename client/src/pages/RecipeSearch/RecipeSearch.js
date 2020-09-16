@@ -21,8 +21,11 @@ function RecipeSearch(props) {
   const classes = useStyles();
   return (
     <Grid className={classes.root}>
-      {loading && <CircularProgress className={classes.spinner} size={100} />}
-      <RecipeList />
+      {loading ? (
+        <CircularProgress className={classes.spinner} size={100} />
+      ) : (
+        <RecipeList />
+      )}
     </Grid>
   );
 }
