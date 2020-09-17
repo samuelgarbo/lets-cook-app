@@ -6,10 +6,11 @@ import { useHistory } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
 
 function FavoriteList(props) {
-  const { favorites } = useContext(DataContext);
+  const { favorites, setCurrentRecipe } = useContext(DataContext);
   const history = useHistory();
 
-  const goToRecipe = (id) => {
+  const goToRecipe = (id, recipe) => {
+    setCurrentRecipe(recipe);
     history.push(`/recipe/${id}`);
     const anchor = document.querySelector("#search-field");
     if (anchor) {

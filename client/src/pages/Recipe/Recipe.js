@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
   favorite: {
     color: "red",
     cursor: "pointer",
+    marginLeft: "1rem",
   },
 }));
 function IngredientList({ ingredientLines }) {
@@ -148,16 +149,16 @@ function FoodImage({ image, label }) {
     </Grid>
   );
 }
-function recipeFilter(recipes, id) {
-  const recipe = recipes.filter((recipe) => {
-    let name = recipe.recipe.label
-      .replace(/\s/g, "-")
-      .replace(/[()]/g, "")
-      .toLowerCase();
-    return name === id;
-  })[0].recipe;
-  return recipe;
-}
+// function recipeFilter(recipes, id) {
+//   const recipe = recipes.filter((recipe) => {
+//     let name = recipe.recipe.label
+//       .replace(/\s/g, "-")
+//       .replace(/[()]/g, "")
+//       .toLowerCase();
+//     return name === id;
+//   })[0].recipe;
+//   return recipe;
+// }
 function Recipe(props) {
   const {
     recipes,
@@ -165,6 +166,7 @@ function Recipe(props) {
     loadingComments,
     setLoadingComments,
     getFavorites,
+    currentRecipe,
   } = useContext(DataContext);
   const { auth, user } = useContext(AuthContext);
   const [comments, setComments] = useState([]);
@@ -172,8 +174,7 @@ function Recipe(props) {
   const { id } = useParams();
   const classes = useStyles();
 
-  //search for recipe from recipe list
-  let recipe = recipeFilter(recipes, id);
+  let recipe = currentRecipe;
   const {
     label,
     totalTime,
@@ -192,9 +193,7 @@ function Recipe(props) {
     setLoadingComments(true);
     const response = await commentsAPI.searchComments(id);
     setComments(response);
-    setTimeout(() => {
-      setLoadingComments(false);
-    }, 2000);
+    setLoadingComments(false);
   };
   const handleAddFav = () => {
     const { CHOCDF, ENERC_KCAL, FAT, PROCNT, FIBTG } = totalNutrients;
@@ -229,7 +228,7 @@ function Recipe(props) {
   };
   useEffect(() => {
     getComments(id);
-    isFavorite();
+    if (auth) isFavorite();
   }, []);
 
   return (
@@ -239,26 +238,31 @@ function Recipe(props) {
       alignItems="center"
       className={classes.root}
     >
-      {auth &&
-        (fav ? (
-          <FavoriteRoundedIcon
-            onClick={handleRemoveFav}
-            fontSize="large"
-            className={classes.favorite}
-          />
-        ) : (
-          <FavoriteBorderRoundedIcon
-            onClick={handleAddFav}
-            fontSize="large"
-            className={classes.favorite}
-          />
-        ))}
-
       {/* Recipe title */}
       <Grid item xs className={classes.title}>
-        <Typography variant="h4" component="h1" align="center" gutterBottom>
+        <Typography
+          variant="h4"
+          component="h1"
+          align="center"
+          display="inline"
+          gutterBottom
+        >
           {label}
         </Typography>
+        {auth &&
+          (fav ? (
+            <FavoriteRoundedIcon
+              onClick={handleRemoveFav}
+              fontSize="large"
+              className={classes.favorite}
+            />
+          ) : (
+            <FavoriteBorderRoundedIcon
+              onClick={handleAddFav}
+              fontSize="large"
+              className={classes.favorite}
+            />
+          ))}
       </Grid>
       {/* Food image, preparation time and portions */}
       <Grid item container classes={{ container: classes.imgContainer }}>
@@ -281,7 +285,7 @@ function Recipe(props) {
       ) : (
         <CommentList comments={comments} />
       )}
-      {auth && <CommentForm recipe={id} />}
+      {auth && <CommentForm recipe={id} getComments={getComments} />}
     </Grid>
   );
 }

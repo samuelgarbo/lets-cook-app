@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { DataContext } from "../../context/DataContext";
 import api from "../../api/user";
 import setInputState from "../../hooks/setInputState";
 
@@ -38,6 +39,7 @@ export default function SignIn({ history }) {
   const [password, setPassword, resetPassword] = setInputState("");
   const classes = useStyles();
   const { setAuth, setUser } = useContext(AuthContext);
+  const { getFavorites } = useContext(DataContext);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -52,10 +54,10 @@ export default function SignIn({ history }) {
         firstName: res.firstName,
         lastName: res.lastName,
       });
+      getFavorites();
       resetEmail();
       resetPassword();
-
-      history.goBack();
+      history.push("/");
     }
   };
   return (

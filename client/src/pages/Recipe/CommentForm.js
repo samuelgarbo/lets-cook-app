@@ -7,11 +7,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import commentsAPI from "../../api/comments";
 import { AuthContext } from "../../context/AuthContext";
 import setInputState from "../../hooks/setInputState";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({}));
 
-function CommentForm({ recipe }) {
+function CommentForm({ recipe, getComments }) {
   const { user } = useContext(AuthContext);
+  const { id } = useParams();
   const [comment, setComment, resetComment] = setInputState("");
   const classes = useStyles();
 
@@ -23,7 +25,7 @@ function CommentForm({ recipe }) {
       comment,
       user: user._id,
     });
-    console.log(response);
+    getComments(id);
   };
   return (
     <form onSubmit={handleSubmit}>

@@ -58,14 +58,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SearchBar() {
+function SearchBar({ history, location }) {
   const classes = useStyles();
   const [input, setInput, resetInput] = setInputState("");
   const { fetchRecipes } = useContext(DataContext);
+  const show =
+    location.pathname === "/signin" || location.pathname === "/signup";
 
   const handleSearch = (e) => {
     e.preventDefault();
     fetchRecipes(input);
+    history.push("/");
     resetInput();
   };
 
@@ -85,24 +88,26 @@ function SearchBar() {
           xs={12}
           className={classes.logoContainer}
         >
-          <Logo className={classes.logo} />
+          {location.pathname === "/" && <Logo className={classes.logo} />}
         </Grid>
 
-        <Grid item xs={10} md={6} id="search-field">
-          <form onSubmit={handleSearch}>
-            <Paper>
-              <TextField
-                variant="outlined"
-                placeholder="What shall we cook?"
-                color="primary"
-                fullWidth
-                autoFocus
-                value={input}
-                onChange={setInput}
-              />
-            </Paper>
-          </form>
-        </Grid>
+        {!show && (
+          <Grid item xs={10} md={6} id="search-field">
+            <form onSubmit={handleSearch}>
+              <Paper>
+                <TextField
+                  variant="outlined"
+                  placeholder="What shall we cook?"
+                  color="primary"
+                  fullWidth
+                  autoFocus
+                  value={input}
+                  onChange={setInput}
+                />
+              </Paper>
+            </form>
+          </Grid>
+        )}
       </Grid>
     </div>
   );

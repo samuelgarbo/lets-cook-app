@@ -43,10 +43,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NavBar({ history }) {
+function NavBar({ history, location }) {
   const classes = useStyles();
   const { auth, setAuth, setUser } = useContext(AuthContext);
-  const { getFavorites } = useContext(DataContext);
+  const { getFavorites, setFavorites } = useContext(DataContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -71,6 +71,8 @@ function NavBar({ history }) {
     handleClose();
     setAuth(false);
     setUser({});
+    setFavorites([]);
+    if (location.pathname === "/myfavorites") history.push("/");
   };
 
   const handleSignIn = () => {
@@ -94,21 +96,9 @@ function NavBar({ history }) {
         <div className={classes.overlay} />
       </Fade>
       <Toolbar>
-        <Link to="/">
+        <Link to="/" className={classes.title}>
           <Logo className={classes.logo} />
         </Link>
-        <FormGroup className={classes.title}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={auth}
-                onChange={handleChange}
-                aria-label="login switch"
-              />
-            }
-            label={auth ? "Logout" : "Login"}
-          />
-        </FormGroup>
         {auth ? (
           <div>
             <IconButton

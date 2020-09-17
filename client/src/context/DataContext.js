@@ -16,6 +16,7 @@ export function DataProvider(props) {
   const [loading, setLoading] = useState(false);
   const [loadingComments, setLoadingComments] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [currentRecipe, setCurrentRecipe] = useState({});
   // const url = config.edamamAPI
   // const loadData=()=>{
   //   setLoading(true);
@@ -60,6 +61,9 @@ export function DataProvider(props) {
         setLoadingComments,
         fetchRecipes,
         getFavorites,
+        setFavorites,
+        currentRecipe,
+        setCurrentRecipe,
       }}
     >
       {props.children}
