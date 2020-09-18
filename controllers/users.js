@@ -2,19 +2,22 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 const bcrypt = require("bcrypt");
+const verifyToken = require("../middleware/verifyToken");
+const jwt = require("jsonwebtoken");
+const config = require("../config/default");
 
 // @route   GET api/users
 // @desc    Get all users
 // @access  Public
-router.get("/", (req, res) => {
-  db.User.find()
-    .then((users) => {
-      res.json(users);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
-});
+// router.get("/", (req, res) => {
+//   db.User.find()
+//     .then((users) => {
+//       res.json(users);
+//     })
+//     .catch((err) => {
+//       res.send(err);
+//     });
+// });
 
 // @route   POST api/users
 // @desc    Post new user
@@ -40,12 +43,24 @@ router.post("/", async (req, res) => {
         email,
         password: hashedPassword,
       });
-      return res.status(201).json({
+      const userResponse = {
         _id: user._id,
+        email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email,
-      });
+      };
+      return jwt.sign(
+        { user: userResponse },
+        config.TOKEN_SECRET,
+        (err, token) => {
+          return res.status(200).json({
+            token,
+            user: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          });
+        }
+      );
     }
     //existing user
     return res.status(200).json({
@@ -58,8 +73,8 @@ router.post("/", async (req, res) => {
 
 // @route   GET api/users/:userId
 // @desc    Get one user by id
-// @access  Public
-router.get("/:userId", async (req, res) => {
+// @access  Private
+router.get("/:userId", verifyToken, async (req, res) => {
   const { userId } = req.params;
   try {
     let user = await db.User.findById(userId);
@@ -87,6 +102,7 @@ router.get("/:userId", async (req, res) => {
 // @access  Public
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+
   try {
     // Simple validation
     if (!email || !password) {
@@ -102,7 +118,7 @@ router.post("/login", async (req, res) => {
       return res.status(200).json({ message: "user not found" });
     }
     //check if user and password combo matches
-    const passwordComparison = await bcrypt.compare(password, user.password)
+    const passwordComparison = await bcrypt.compare(password, user.password);
     if (user && passwordComparison) {
       const userResponse = {
         _id: user._id,
@@ -110,7 +126,18 @@ router.post("/login", async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
       };
-      return res.status(200).json(userResponse);
+      return jwt.sign(
+        { user: userResponse },
+        config.TOKEN_SECRET,
+        (err, token) => {
+          return res.status(200).json({
+            token,
+            user: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          });
+        }
+      );
     } else {
       return res.status(200).json({ message: "password does not match" });
     }
@@ -121,8 +148,8 @@ router.post("/login", async (req, res) => {
 
 // @route   PUT api/users/:userId
 // @desc    Update one user
-// @access  Public
-router.put("/:userId", (req, res) => {
+// @access  Private
+router.put("/:userId", verifyToken, (req, res) => {
   const { userId } = req.params;
   db.User.findByIdAndUpdate(userId, req.body, { new: true })
     .then((updatedUser) => {
@@ -135,8 +162,8 @@ router.put("/:userId", (req, res) => {
 
 // @route   DELETE api/users/:userId
 // @desc    Remove one user
-// @access  Public
-router.delete("/:userId", (req, res) => {
+// @access  Private
+router.delete("/:userId", verifyToken, (req, res) => {
   const { userId } = req.params;
   db.User.findByIdAndDelete(userId)
     .then((deletedUser) => {

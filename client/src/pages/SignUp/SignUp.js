@@ -38,25 +38,25 @@ export default function SignUp({ history }) {
   const [lastName, setLastName, resetLastName] = setInputState("");
   const [email, setEmail, resetEmail] = setInputState("");
   const [password, setPassword, resetPassword] = setInputState("");
-  const { setAuth, setUser } = useContext(AuthContext);
+  const { setAuth, setUser, setToken } = useContext(AuthContext);
   const classes = useStyles();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await api.createUser({ firstName, lastName, email, password });
-    if (!res._id) {
+    if (!res.user) {
       resetPassword();
     } else {
       setAuth(true);
       setUser({
-        id: res._id,
+        id: res.user,
         firstName: res.firstName,
         lastName: res.lastName,
       });
+      setToken(res.token);
       resetFirstName();
       resetLastName();
       resetEmail();
       resetPassword();
-      localStorage.setItem("user", res._id);
       history.push("/");
     }
   };

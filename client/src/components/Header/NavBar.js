@@ -5,9 +5,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
@@ -45,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NavBar({ history, location }) {
   const classes = useStyles();
-  const { auth, setAuth, setUser } = useContext(AuthContext);
+  const { auth, setAuth, setUser, setToken } = useContext(AuthContext);
   const { getFavorites, setFavorites } = useContext(DataContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -72,6 +69,7 @@ function NavBar({ history, location }) {
     setAuth(false);
     setUser({});
     setFavorites([]);
+    setToken("");
     if (location.pathname === "/myfavorites") history.push("/");
   };
 

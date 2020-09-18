@@ -149,32 +149,21 @@ function FoodImage({ image, label }) {
     </Grid>
   );
 }
-// function recipeFilter(recipes, id) {
-//   const recipe = recipes.filter((recipe) => {
-//     let name = recipe.recipe.label
-//       .replace(/\s/g, "-")
-//       .replace(/[()]/g, "")
-//       .toLowerCase();
-//     return name === id;
-//   })[0].recipe;
-//   return recipe;
-// }
+
 function Recipe(props) {
   const {
-    recipes,
     favorites,
     loadingComments,
     setLoadingComments,
     getFavorites,
     currentRecipe,
   } = useContext(DataContext);
-  const { auth, user } = useContext(AuthContext);
+  const { auth, user, token } = useContext(AuthContext);
   const [comments, setComments] = useState([]);
   const [fav, setFav] = useState(null);
   const { id } = useParams();
   const classes = useStyles();
 
-  let recipe = currentRecipe;
   const {
     label,
     totalTime,
@@ -183,7 +172,7 @@ function Recipe(props) {
     totalNutrients,
     totalWeight,
     uri,
-  } = recipe;
+  } = currentRecipe;
 
   const isFavorite = () => {
     const result = favorites.some((val) => val.label === id);
@@ -205,12 +194,12 @@ function Recipe(props) {
       ingredientLines,
       totalNutrients: newTotalNutrients,
       totalWeight,
-      yield: recipe["yield"],
+      yield: currentRecipe["yield"],
       user: user._id,
       uri,
     };
     favoritesAPI
-      .addFavorite(favorite)
+      .addFavorite(favorite, token)
       .then((res) => {
         setFav(true);
         getFavorites();
@@ -219,7 +208,7 @@ function Recipe(props) {
   };
   const handleRemoveFav = () => {
     favoritesAPI
-      .removeFavorite(id)
+      .removeFavorite(id, token)
       .then((res) => {
         setFav(false);
         getFavorites();
@@ -269,7 +258,7 @@ function Recipe(props) {
         <FoodImage image={image} label={label} />
         <Grid item xs container direction="column">
           <PreparationTime totalTime={totalTime} />
-          <Yield servings={recipe["yield"]} />
+          <Yield servings={currentRecipe["yield"]} />
         </Grid>
       </Grid>
       {/* Ingredients and method */}

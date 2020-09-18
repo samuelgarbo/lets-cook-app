@@ -1,15 +1,8 @@
-import React, { createContext, useState, useEffect } from "react";
-import data from "../dummyData";
+import React, { createContext, useState } from "react";
 import favoritesAPI from "../api/favorites";
 import recipesAPI from "../api/recipes";
 
 export const DataContext = createContext();
-
-// const myPromise = new Promise((resolve) => {
-//   setTimeout(function () {
-//     resolve(data);
-//   }, 1000);
-// });
 
 export function DataProvider(props) {
   const [recipes, setRecipes] = useState([]);
@@ -17,38 +10,23 @@ export function DataProvider(props) {
   const [loadingComments, setLoadingComments] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [currentRecipe, setCurrentRecipe] = useState({});
-  // const url = config.edamamAPI
-  // const loadData=()=>{
-  //   setLoading(true);
-  //   // fetch(URL)
-  //   myPromise
-  //     // .then((response) => response.json())
-  //     .then((data) => setRecipes([...data.hits]))
-  //     .then(() => setLoading(false));
-  // }
-  // useEffect(() => {
-  //   loadData()
-  // }, []);
+
   const getFavorites = async () => {
     setLoading(true);
     const user = JSON.parse(localStorage.getItem("user"));
-    const response = await favoritesAPI.getFavoritesByUserId(user._id);
+    const token = localStorage.getItem("token");
+    const response = await favoritesAPI.getFavoritesByUserId(user._id, token);
     setFavorites(response);
     setLoading(false);
   };
-  const loadData = () => {
-    setRecipes([...data.hits]);
-    getFavorites();
-  };
+
   const fetchRecipes = async (param) => {
     setLoading(true);
     const response = await recipesAPI.getRecipesByParam(param);
-    setRecipes([...response.hits]);
+    const arr = response.hits.map((val) => val.recipe);
+    setRecipes([...arr]);
     setLoading(false);
   };
-  useEffect(() => {
-    loadData();
-  }, []);
 
   return (
     <DataContext.Provider

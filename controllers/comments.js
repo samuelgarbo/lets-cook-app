@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
+const verifyToken = require("../middleware/verifyToken");
 
 // @route   GET api/comments
 // @desc    Get all comments
-// @access  Public
-router.get("/", (req, res) => {
+// @access  Private
+router.get("/", verifyToken, (req, res) => {
   db.Comment.find()
     .then((comments) => {
       res.json(comments);
@@ -17,8 +18,8 @@ router.get("/", (req, res) => {
 
 // @route   POST api/comments
 // @desc    Post new comment
-// @access  Public
-router.post("/", (req, res) => {
+// @access  Private
+router.post("/", verifyToken, (req, res) => {
   const { recipe, comment, user } = req.body;
   //simple validation
   if (!recipe || !comment || !user)
@@ -54,8 +55,8 @@ router.get("/:commentId", (req, res) => {
 
 // @route   GET api/comments/user/:userId
 // @desc    Get comments by user id
-// @access  Public
-router.get("/user/:userId", (req, res) => {
+// @access  Private
+router.get("/user/:userId", verifyToken, (req, res) => {
   const { userId } = req.params;
   db.Comment.find({ user: userId })
     .then((comments) => {
@@ -65,6 +66,7 @@ router.get("/user/:userId", (req, res) => {
       res.send(err);
     });
 });
+
 // @route   GET api/comments/recipe/:label
 // @desc    Get comments by recipe label
 // @access  Public
@@ -82,8 +84,8 @@ router.get("/recipe/:label", (req, res) => {
 
 // @route   PUT api/comments/:commentId
 // @desc    Update one Comment
-// @access  Public
-router.put("/:commentId", (req, res) => {
+// @access  Private
+router.put("/:commentId", verifyToken, (req, res) => {
   const { commentId } = req.params;
   db.Comment.findByIdAndUpdate(commentId, req.body, { new: true })
     .then((updatedComment) => {
@@ -96,8 +98,8 @@ router.put("/:commentId", (req, res) => {
 
 // @route   DELETE api/comments/:commentId
 // @desc    Remove one Comment
-// @access  Public
-router.delete("/:commentId", (req, res) => {
+// @access  Private
+router.delete("/:commentId", verifyToken, (req, res) => {
   const { commentId } = req.params;
   db.Comment.findByIdAndDelete(commentId)
     .then((deletedComment) => {

@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models");
+const verifyToken = require("../middleware/verifyToken");
 
 // @route   GET api/favorites
 // @desc    Get all favorites
-// @access  Public
-router.get("/", (req, res) => {
+// @access  Private
+router.get("/", verifyToken, (req, res) => {
   db.Favorite.find()
     .then((favorites) => {
       res.json(favorites);
@@ -17,8 +18,8 @@ router.get("/", (req, res) => {
 
 // @route   POST api/favorites
 // @desc    Add new favorite
-// @access  Public
-router.post("/", async (req, res) => {
+// @access  Private
+router.post("/", verifyToken, async (req, res) => {
   const {
     label,
     uri,
@@ -77,8 +78,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-// // @route   GET api/comments/:commentId
-// // @desc    Get one comment by id
+// // @route   GET api/favorites/:favoriteId
+// // @desc    Get one favorite by id
 // // @access  Public
 // router.get("/:commentId", (req, res) => {
 //   const { commentId } = req.params;
@@ -94,8 +95,8 @@ router.post("/", async (req, res) => {
 
 // @route   GET api/favorites/user/:userId
 // @desc    Get favorites by user id
-// @access  Public
-router.get("/user/:userId", (req, res) => {
+// @access  Private
+router.get("/user/:userId", verifyToken, (req, res) => {
   const { userId } = req.params;
   db.Favorite.find({ user: userId })
     .then((favorites) => {
@@ -105,8 +106,8 @@ router.get("/user/:userId", (req, res) => {
       res.send(err);
     });
 });
-// // @route   GET api/comments/recipe/:label
-// // @desc    Get comments by recipe label
+// // @route   GET api/favorites/recipe/:label
+// // @desc    Get favorites by recipe label
 // // @access  Public
 // router.get("/recipe/:label", (req, res) => {
 //   const { label } = req.params;
@@ -120,8 +121,8 @@ router.get("/user/:userId", (req, res) => {
 //     });
 // });
 
-// // @route   PUT api/comments/:commentId
-// // @desc    Update one Comment
+// // @route   PUT api/favorites/:favoriteId
+// // @desc    Update one favorite
 // // @access  Public
 // router.put("/:commentId", (req, res) => {
 //   const { commentId } = req.params;
@@ -136,8 +137,8 @@ router.get("/user/:userId", (req, res) => {
 
 // @route   DELETE api/favorites/:favoriteId
 // @desc    Remove one favorite
-// @access  Public
-router.delete("/recipe/:recipe", (req, res) => {
+// @access  Private
+router.delete("/recipe/:recipe", verifyToken, (req, res) => {
   const { recipe } = req.params;
   db.Favorite.findOneAndDelete({ label: recipe })
     .then((deletedFavorite) => {

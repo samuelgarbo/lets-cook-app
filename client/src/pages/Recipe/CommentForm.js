@@ -9,13 +9,10 @@ import { AuthContext } from "../../context/AuthContext";
 import setInputState from "../../hooks/setInputState";
 import { useParams } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({}));
-
 function CommentForm({ recipe, getComments }) {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const { id } = useParams();
   const [comment, setComment, resetComment] = setInputState("");
-  const classes = useStyles();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +21,7 @@ function CommentForm({ recipe, getComments }) {
       recipe,
       comment,
       user: user._id,
+      token,
     });
     getComments(id);
   };

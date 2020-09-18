@@ -68,8 +68,8 @@ function SearchBar({ history, location }) {
   const handleSearch = (e) => {
     e.preventDefault();
     fetchRecipes(input);
-    history.push("/");
     resetInput();
+    history.push("/recipes");
   };
 
   return (

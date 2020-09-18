@@ -38,22 +38,23 @@ export default function SignIn({ history }) {
   const [email, setEmail, resetEmail] = setInputState("");
   const [password, setPassword, resetPassword] = setInputState("");
   const classes = useStyles();
-  const { setAuth, setUser } = useContext(AuthContext);
+  const { setAuth, setUser, setToken } = useContext(AuthContext);
   const { getFavorites } = useContext(DataContext);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
 
     const res = await api.loginUser({ email, password });
-    if (!res._id) {
+    if (!res.user) {
       resetPassword();
     } else {
       setAuth(true);
       setUser({
-        _id: res._id,
+        _id: res.user,
         firstName: res.firstName,
         lastName: res.lastName,
       });
+      setToken(res.token);
       getFavorites();
       resetEmail();
       resetPassword();

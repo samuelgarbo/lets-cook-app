@@ -1,25 +1,37 @@
 import { api } from "../config/default";
 
 //get all favorites
-const getFavorites = async () => {
-  const response = await api.get(`/favorites/`);
+const getFavorites = async (token) => {
+  const config = {
+    authorization: `bearer ${token}`,
+  };
+  const response = await api.get(`/favorites/`, { headers: config });
   return response.data;
 };
 
 //get all favorites by user id
-const getFavoritesByUserId = async (user) => {
-  const response = await api.get(`/favorites/user/${user}`);
+const getFavoritesByUserId = async (user, token) => {
+  const config = {
+    authorization: `bearer ${token}`,
+  };
+  const response = await api.get(`/favorites/user/${user}`, {
+    headers: config,
+  });
   return response.data;
 };
 
 //delete favorite by recipe label
-const removeFavorite = async (recipe) => {
-  const response = await api.delete(`/favorites/recipe/${recipe}`);
-  console.log(response);
+const removeFavorite = async (recipe, token) => {
+  const config = {
+    authorization: `bearer ${token}`,
+  };
+  const response = await api.delete(`/favorites/recipe/${recipe}`, {
+    headers: config,
+  });
   return response.data;
 };
 //add favorite
-const addFavorite = async (recipe) => {
+const addFavorite = async (recipe, token) => {
   const {
     label,
     totalTime,
@@ -41,8 +53,11 @@ const addFavorite = async (recipe) => {
     user,
     uri,
   };
-  const config = { contentType: "application/json" };
-  const response = await api.post("/favorites", favorite, config);
+  const config = {
+    contentType: "application/json",
+    authorization: `bearer ${token}`,
+  };
+  const response = await api.post("/favorites", favorite, { headers: config });
   return response.data;
 };
 

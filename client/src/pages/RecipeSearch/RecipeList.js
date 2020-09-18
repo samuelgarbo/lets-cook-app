@@ -22,8 +22,8 @@ function RecipeList(props) {
       <Grid item container justify="center">
         {recipes.map((recipe) => (
           <RecipeCard
-            key={recipe.recipe.uri}
-            recipe={recipe.recipe}
+            key={recipe.uri}
+            recipe={recipe}
             goToRecipe={goToRecipe}
           />
         ))}

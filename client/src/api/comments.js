@@ -1,12 +1,15 @@
 import { api } from "../config/default";
 
 //create comment
-const createComment = async ({ recipe, comment, user }) => {
-  const config = { contentType: "application-json" };
+const createComment = async ({ recipe, comment, user, token }) => {
+  const config = {
+    contentType: "application-json",
+    authorization: `bearer ${token}`,
+  };
   const response = await api.post(
     "/comments",
     { recipe, comment, user },
-    config
+    { headers: config }
   );
   return response.data;
 };
