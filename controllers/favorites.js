@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 const verifyToken = require("../middleware/verifyToken");
+const BASE_URI = "http://www.edamam.com/ontologies/edamam.owl#";
 
 // @route   GET api/favorites
 // @desc    Get all favorites
@@ -47,7 +48,7 @@ router.post("/", verifyToken, async (req, res) => {
   }
 
   const existingFavorite = await db.Favorite.findOne({
-    label: label,
+    uri: uri,
     user: user,
   });
 
@@ -136,11 +137,12 @@ router.get("/user/:userId", verifyToken, (req, res) => {
 // });
 
 // @route   DELETE api/favorites/:favoriteId
-// @desc    Remove one favorite
+// @desc    Remove one favorite by uri
 // @access  Private
 router.delete("/recipe/:recipe", verifyToken, (req, res) => {
   const { recipe } = req.params;
-  db.Favorite.findOneAndDelete({ label: recipe })
+  console.log(BASE_URI + recipe);
+  db.Favorite.findOneAndDelete({ uri: BASE_URI + recipe })
     .then((deletedFavorite) => {
       res.json(deletedFavorite);
     })

@@ -7,23 +7,21 @@ import { makeStyles } from "@material-ui/core/styles";
 import commentsAPI from "../../api/comments";
 import { AuthContext } from "../../context/AuthContext";
 import setInputState from "../../hooks/setInputState";
-import { useParams } from "react-router-dom";
 
 function CommentForm({ recipe, getComments }) {
   const { user, token } = useContext(AuthContext);
-  const { id } = useParams();
   const [comment, setComment, resetComment] = setInputState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     resetComment();
-    const response = await commentsAPI.createComment({
+    await commentsAPI.createComment({
       recipe,
       comment,
       user: user._id,
       token,
     });
-    getComments(id);
+    getComments(recipe);
   };
   return (
     <form onSubmit={handleSubmit}>

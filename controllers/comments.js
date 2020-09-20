@@ -67,12 +67,12 @@ router.get("/user/:userId", verifyToken, (req, res) => {
     });
 });
 
-// @route   GET api/comments/recipe/:label
-// @desc    Get comments by recipe label
+// @route   GET api/comments/recipe/:id
+// @desc    Get comments by recipe uri
 // @access  Public
-router.get("/recipe/:label", (req, res) => {
-  const { label } = req.params;
-  db.Comment.find({ recipe: label })
+router.get("/recipe/:id", (req, res) => {
+  const { id } = req.params;
+  db.Comment.find({ recipe: id })
     .populate("user", "-password")
     .then((comments) => {
       res.json(comments);

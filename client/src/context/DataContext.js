@@ -19,12 +19,19 @@ export function DataProvider(props) {
     setFavorites(response);
     setLoading(false);
   };
-
+  //Get recipe from EdamamAPI by key word
   const fetchRecipes = async (param) => {
     setLoading(true);
     const response = await recipesAPI.getRecipesByParam(param);
     const arr = response.hits.map((val) => val.recipe);
     setRecipes([...arr]);
+    setLoading(false);
+  };
+  //Get recipe from EdamamAPI by uri
+  const fetchOneRecipe = async (id) => {
+    setLoading(true);
+    const response = await recipesAPI.getRecipeByURI(id);
+    setCurrentRecipe(response[0]);
     setLoading(false);
   };
 
@@ -38,6 +45,7 @@ export function DataProvider(props) {
         loadingComments,
         setLoadingComments,
         fetchRecipes,
+        fetchOneRecipe,
         getFavorites,
         setFavorites,
         currentRecipe,

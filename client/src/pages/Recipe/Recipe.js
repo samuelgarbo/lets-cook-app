@@ -16,6 +16,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { AuthContext } from "../../context/AuthContext";
 import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@material-ui/icons/FavoriteBorderRounded";
+import { BASE_URI } from "../../config/default";
 
 const method = [
   "Sequi aut iusto nisi possimus incidunt ut. Illo qui rerum cupiditate ut omnis cumque et dolore. Corporis et delectus quo.",
@@ -149,6 +150,9 @@ function FoodImage({ image, label }) {
     </Grid>
   );
 }
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
 
 function Recipe(props) {
   const {
@@ -157,11 +161,13 @@ function Recipe(props) {
     setLoadingComments,
     getFavorites,
     currentRecipe,
+    fetchOneRecipe,
   } = useContext(DataContext);
   const { auth, user, token } = useContext(AuthContext);
   const [comments, setComments] = useState([]);
   const [fav, setFav] = useState(null);
   const { id } = useParams();
+  const isCurrentRecipeEmpty = isEmpty(currentRecipe);
   const classes = useStyles();
 
   const {
@@ -173,14 +179,13 @@ function Recipe(props) {
     totalWeight,
     uri,
   } = currentRecipe;
-
   const isFavorite = () => {
-    const result = favorites.some((val) => val.label === id);
+    const result = favorites.some((val) => val.uri === BASE_URI + id);
     setFav(result);
   };
-  const getComments = async (id) => {
+  const getComments = async (uri) => {
     setLoadingComments(true);
-    const response = await commentsAPI.searchComments(id);
+    const response = await commentsAPI.searchComments(uri);
     setComments(response);
     setLoadingComments(false);
   };
@@ -188,7 +193,7 @@ function Recipe(props) {
     const { CHOCDF, ENERC_KCAL, FAT, PROCNT, FIBTG } = totalNutrients;
     const newTotalNutrients = { CHOCDF, ENERC_KCAL, FAT, PROCNT, FIBTG };
     const favorite = {
-      label: id,
+      label,
       totalTime,
       image,
       ingredientLines,
@@ -207,8 +212,11 @@ function Recipe(props) {
       .catch((e) => console.log(e));
   };
   const handleRemoveFav = () => {
+    //extract recipe id from uri
+    const regex = /recipe\w+/;
+    const found = uri.match(regex)[0];
     favoritesAPI
-      .removeFavorite(id, token)
+      .removeFavorite(found, token)
       .then((res) => {
         setFav(false);
         getFavorites();
@@ -216,11 +224,14 @@ function Recipe(props) {
       .catch((e) => console.log(e));
   };
   useEffect(() => {
+    if (isCurrentRecipeEmpty) fetchOneRecipe(id);
     getComments(id);
     if (auth) isFavorite();
   }, []);
 
-  return (
+  return isCurrentRecipeEmpty ? (
+    ""
+  ) : (
     <Grid
       container
       direction="column"

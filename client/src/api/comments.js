@@ -14,8 +14,8 @@ const createComment = async ({ recipe, comment, user, token }) => {
   return response.data;
 };
 //search comments by recipe
-const searchComments = async (label) => {
-  const response = await api.get(`/comments/recipe/${label}`);
+const searchComments = async (id) => {
+  const response = await api.get(`/comments/recipe/${id}`);
   return response.data;
 };
 

@@ -9,9 +9,12 @@ function RecipeList(props) {
   const { recipes, setCurrentRecipe } = useContext(DataContext);
   const history = useHistory();
 
-  const goToRecipe = (id, recipe) => {
+  const goToRecipe = (uri, recipe) => {
     setCurrentRecipe(recipe);
-    history.push(`/recipe/${id}`);
+    //extract recipe id from uri
+    const regex = /recipe\w+/;
+    const found = uri.match(regex)[0];
+    history.push(`/recipe/${found}`);
     const anchor = document.querySelector("#back-to-top-anchor");
     if (anchor) {
       anchor.scrollIntoView({ behavior: "smooth", block: "start" });
