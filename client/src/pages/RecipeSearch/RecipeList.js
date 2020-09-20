@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Redirect } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import RecipeCard from "./RecipeCard";
 import Container from "@material-ui/core/Container";
@@ -20,7 +21,10 @@ function RecipeList(props) {
       anchor.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
-  return (
+
+  return recipes.length === 0 ? (
+    <Redirect to="/" />
+  ) : (
     <Container maxWidth="lg" disableGutters={true}>
       <Grid item container justify="center">
         {recipes.map((recipe) => (
