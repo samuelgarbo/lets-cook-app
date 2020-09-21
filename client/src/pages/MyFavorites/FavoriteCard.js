@@ -41,9 +41,8 @@ function FavoriteCard({ recipe, goToRecipe }) {
   const { label, image } = recipe;
 
   const handleGoToRecipe = () => {
-    //replace white space and brackets to -
-    let id = label.replace(/\s/g, "-").replace(/[()]/g, "").toLowerCase();
-    goToRecipe(id, recipe);
+    let uri = recipe.uri;
+    goToRecipe(uri, recipe);
   };
 
   return (

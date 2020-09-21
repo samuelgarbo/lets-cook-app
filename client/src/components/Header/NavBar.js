@@ -94,9 +94,10 @@ function NavBar({ history, location }) {
         <div className={classes.overlay} />
       </Fade>
       <Toolbar>
-        <Link to="/" className={classes.title}>
+        <Link to="/">
           <Logo className={classes.logo} />
         </Link>
+        <div className={classes.title} />
         {auth ? (
           <div>
             <IconButton

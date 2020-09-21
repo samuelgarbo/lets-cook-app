@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { DataContext } from "../../context/DataContext";
 import { makeStyles } from "@material-ui/core/styles";
+import scrollToHome from "../../helpers/scrollToHome";
 
 const foods = ["beef", "pork", "fish", "chicken", "fruit", "vegetables"];
 
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     height: 100,
     justifyContent: "center",
     alignItems: "center",
+    cursor: "pointer",
   },
 }));
 
@@ -32,6 +34,7 @@ function Home({ history }) {
   const handleClick = (e) => {
     fetchRecipes(e.target.id);
     history.push("/recipes");
+    scrollToHome();
   };
   return (
     <>

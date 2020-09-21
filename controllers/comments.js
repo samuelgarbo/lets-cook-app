@@ -73,7 +73,7 @@ router.get("/user/:userId", verifyToken, (req, res) => {
 router.get("/recipe/:id", (req, res) => {
   const { id } = req.params;
   db.Comment.find({ recipe: id })
-    .populate("user", "-password")
+    .populate("user", "-password -email")
     .then((comments) => {
       res.json(comments);
     })

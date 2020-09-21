@@ -5,6 +5,7 @@ import RecipeCard from "./RecipeCard";
 import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
+import scrollToHome from "../../helpers/scrollToHome";
 
 function RecipeList(props) {
   const { recipes, setCurrentRecipe } = useContext(DataContext);
@@ -16,10 +17,7 @@ function RecipeList(props) {
     const regex = /recipe\w+/;
     const found = uri.match(regex)[0];
     history.push(`/recipe/${found}`);
-    const anchor = document.querySelector("#back-to-top-anchor");
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    scrollToHome();
   };
 
   return recipes.length === 0 ? (

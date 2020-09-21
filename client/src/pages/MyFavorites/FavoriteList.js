@@ -4,18 +4,19 @@ import FavoriteCard from "./FavoriteCard";
 import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
 import { DataContext } from "../../context/DataContext";
+import scrollToHome from "../../helpers/scrollToHome";
 
 function FavoriteList(props) {
   const { favorites, setCurrentRecipe } = useContext(DataContext);
   const history = useHistory();
 
-  const goToRecipe = (id, recipe) => {
+  const goToRecipe = (uri, recipe) => {
     setCurrentRecipe(recipe);
-    history.push(`/recipe/${id}`);
-    const anchor = document.querySelector("#search-field");
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    //extract recipe id from uri
+    const regex = /recipe\w+/;
+    const found = uri.match(regex)[0];
+    history.push(`/recipe/${found}`);
+    scrollToHome();
   };
   return (
     <Container maxWidth="lg" disableGutters={true}>

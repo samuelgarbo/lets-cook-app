@@ -151,7 +151,7 @@ function FoodImage({ image, label }) {
   );
 }
 function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
+  return JSON.stringify(obj) === "{}";
 }
 
 function Recipe(props) {
@@ -179,8 +179,12 @@ function Recipe(props) {
     totalWeight,
     uri,
   } = currentRecipe;
+
   const isFavorite = () => {
-    const result = favorites.some((val) => val.uri === BASE_URI + id);
+    const result = favorites.some((val) => {
+      return val.uri === BASE_URI + id;
+    });
+
     setFav(result);
   };
   const getComments = async (uri) => {
