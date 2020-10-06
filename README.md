@@ -1,11 +1,11 @@
-# lets-cook-app
+# lets-eat-app
 
 Full stack application using the MERN stack.
 Recipes come from the Edamam recipe API.
 
 Functionalities: 
     search for recipes
-    create and remove account
+    create account
     login 
     bookmark favorite recipes
     comment recipes
